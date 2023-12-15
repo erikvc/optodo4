@@ -126,27 +126,35 @@ if(isset($_POST['createProject'])){
 	$projectCreateClient = $_POST['projectCreateClient'];
 	$projectCreatePreset = $_POST['projectCreatePreset'];
 	$projectCreateDueDate = date("Y-m-d", strtotime($_POST['projectCreateDueDate']));
-	echo '<script>alert("'.$projectCreateName.'")</script>';
+	//echo '<script>alert("'.$projectCreateName.'")</script>';
 
-	$sqlCreateProject = mysqli_query($conexao, "INSERT INTO projects (projectName, member, client, preset, due_date, creation_date)VALUES('$projectCreateName', '$projectCreateMember', '$projectCreateClient', '$projectCreatePreset', '$projectCreateDueDate', NOW())") or die(mysqli_error($conexao));
 
-	if($sqlCreateProject){
+	$sqlGetCurrentYear = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM config WHERE id = 1"));
 
-		$sqlGetCurrentYear = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM config WHERE id = 1"));
+	$currentYearOptodo = $sqlGetCurrentYear['currentYear'];
+	//echo '<script>alert("'.$currentYearOptodo.'")</script>';
+	$currentYearHost = date("Y");
 
-		$currentYearOptodo = $sqlGetCurrentYear['currentYear'];
-		$currentYearHost = date("Y");
+	$sqlGetMemberInfo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM members WHERE id = '$projectCreateMember'"));
+	$clientAbbreviation = $sqlGetMemberInfo['abbreviation'];
 
-		$sqlGetMemberInfo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM members WHERE id = '$projectCreateMember'"));
-		$clientAbbreviation = $sqlGetMemberInfo['abbreviation'];
 
-		//PEGA CLIENT INFO
-		$sqlGetClientInfo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM clients WHERE id = '$projectCreateClient'"));
-
-		if($currentYearHost != $currentYearOptodo){
-			$titleProject = date("y").$sqlGetClientInfo['number']+1;
-		}
+	if($currentYearHost != $currentYearOptodo){
+		$sqlUpdateCurrentYear = mysqli_query($conexao, "UPDATE config SET currentYear='$currentYearHost' WHERE id = 1");
+		$sqlUpdateClientsNumber = mysqli_query($conexao, "UPDATE clients SET number='$updatedClientNumber'");
 	}
+
+	//PEGA CLIENT INFO
+	$sqlGetClientInfo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM clients WHERE id = '$projectCreateClient'"));
+
+	$currentYear = date("y");
+
+	$updatedClientNumber = $sqlGetClientInfo['number']+1;
+	
+	$sqlUpdateClientNumber = mysqli_query($conexao, "UPDATE clients SET number='$updatedClientNumber' WHERE id = '$projectCreateClient'");
+
+	$sqlCreateProject = mysqli_query($conexao, "INSERT INTO projects (projectName, number, year, member, client, preset, due_date, creation_date)VALUES('$projectCreateName', '$updatedClientNumber', '$currentYear', '$projectCreateMember', '$projectCreateClient', '$projectCreatePreset', '$projectCreateDueDate', NOW())") or die(mysqli_error($conexao));
+
 
 	echo '<script>window.location.href="index.php"</script>';
 
@@ -1223,11 +1231,20 @@ if(isset($_POST['createProject'])){
 								$sqlGetProjectList = mysqli_query($conexao, "SELECT * FROM projects");
 								while($rowsprojects=mysqli_fetch_array($sqlGetProjectList)){
 									
+									$clientID = $rowsprojects['client'];
+									$sqlGetClientData = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM clients WHERE id = '$clientID'"));
+									$clientNumber = $sqlGetClientData['number'];
+
+									if($rowsprojects['number'] < 10){
+										$formatNumber = '0'.$rowsprojects['number'];
+									}else{
+										$formatNumber = $rowsprojects['number'];
+									}
 							?>
 							<div class="opto-project-container">
 								<div class="opto-project-header">
 									<div class="opto-project-title-container">
-										<h2 class="opto-project-title">OPT2401 - Titulo do Projeto</h2>
+										<h2 class="opto-project-title"><?php echo $sqlGetClientData['abbreviation'].$rowsprojects['year'].$formatNumber.'&nbsp;-&nbsp;'.$rowsprojects['projectName'];?></h2>
 										<div class="opto-project-timeline">
 											<div class="opto-project-timeline-borderline row">
 												<a href="#" class="opto-project-timeline-format opto-project-timeline-production col-4"><div>PRODUCTION</div></a>
