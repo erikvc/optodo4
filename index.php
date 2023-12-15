@@ -136,6 +136,16 @@ if(isset($_POST['createProject'])){
 
 		$currentYearOptodo = $sqlGetCurrentYear['currentYear'];
 		$currentYearHost = date("Y");
+
+		$sqlGetMemberInfo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM members WHERE id = '$projectCreateMember'"));
+		$clientAbbreviation = $sqlGetMemberInfo['abbreviation'];
+
+		//PEGA CLIENT INFO
+		$sqlGetClientInfo = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM clients WHERE id = '$projectCreateClient'"));
+
+		if($currentYearHost != $currentYearOptodo){
+			$titleProject = date("y").$sqlGetClientInfo['number']+1;
+		}
 	}
 
 	echo '<script>window.location.href="index.php"</script>';
