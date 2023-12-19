@@ -13,12 +13,12 @@
 	$taskCreateDueDate = $_POST['taskCreateDueDate'];
 	*/
 
-	$taskCreateTitle = addslashes($_GET['taskCreateTitle']);
-	$taskCreateMember = $_GET['taskCreateMember'];
-	$createTaskProjectID = $_GET['createTaskProjectID'];
-	$taskCreateDueDate = $_GET['taskCreateDueDate'];
+	$title = addslashes($_GET['title']);
+	$member = $_GET['member'];
+	$taskID = $_GET['taskID'];
+	$dueDate = $_GET['dueDate'];
 
-	$sqlInsertTask = mysqli_query($conexao, "INSERT INTO tasks (title, project_id, member_id, due_date)VALUES('$taskCreateTitle', '$createTaskProjectID','$taskCreateMember','$taskCreateDueDate')") or die(mysqli_error($conexao));
+	$sqlInsertTask = mysqli_query($conexao, "INSERT INTO tasks (title, project_id, member_id, due_date)VALUES('$title', '$taskID', '$member', '$dueDate')") or die(mysqli_error($conexao));
 
 	echo 'OK';
 

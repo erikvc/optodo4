@@ -204,7 +204,26 @@ if(isset($_POST['createProject'])){
 
 		<!-- OPTO CSS -->
 		<link rel="stylesheet" href="opto/css/opto.css">
+		<script src="vendor/jquery/jquery.js"></script>
 		<script src="opto/js/opto.js"></script>
+		
+
+		<script>
+			function getTasks(projectID){
+			$.ajax({
+				type: "get",
+				dataType: "json",
+				url: "opto/php/getTasks.php",
+				data: 'project_id='+projectID,
+				crossDomain: true,
+				success: function(retornoTasks){
+					for(var i=0;retornoTasks.lenght>i;i++){
+						$("#recebeTasks"+projectID).append('<div class="opto-project-tasks-list-container"><div class="opto-project-tasks-listView"><div class="opto-projects-tasks-listView-images-member"><img src="opto/image/members/1135825450israel.jpg"></div><div class="opto-projects-tasks-listView-title">Video Production</div><div class="opto-projects-tasks-listView-tools"><a href="#"><i class="fa-solid fa-trash"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onClick="return openTask(1);" id="opto-projects-tasks-open"><i class="fa-regular fa-folder-open"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"><i class="fa-solid fa-folder-closed"></i></a></div><div class="opto-projects-tasks-listView-progressBar"><progress id="file" value="32" max="100"> 32% </progress></div></div></div><!--INICIO DOS STEPS--><div class="opto-project-steps" id="opto-project-steps1"><div class="opto-project-steps-list"><input class="opto-project-steps-checkbox" type="checkbox"><p class="opto-project-steps-title">Titulo do Step</p><div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div></div> </div>');
+					}
+				}
+			})    
+		}
+		</script>
 
 		<!-- Head Libs -->
 		<script src="vendor/modernizr/modernizr.js"></script>
@@ -1232,6 +1251,8 @@ if(isset($_POST['createProject'])){
 								while($rowsprojects=mysqli_fetch_array($sqlGetProjectList)){
 
 									$projectID = $rowsprojects['id'];
+
+									echo '<script type="text/JavaScript">getTasks('.$projectID.')</script>';
 									
 									$clientID = $rowsprojects['client'];
 									$sqlGetClientData = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM clients WHERE id = '$clientID'"));
@@ -1272,13 +1293,10 @@ if(isset($_POST['createProject'])){
 								<div class="opto-project-body" id="opto-project-body<?php echo $projectID; ?>">
 									
 									<div class="opto-project-tasks">
-										<div>Tasks List &nbsp;<span><a class="badge badge-primary" onclick="return openModalCreateTask(<?php echo $projectID; ?>);" href="#"><i class="fa-solid fa-plus"></i></a></span></div>
+										<div>Tasks List &nbsp;<span><a onclick="return openModalCreateTask(<?php echo $projectID; ?>);" href="#"><i class="fa-solid fa-plus"></i></a></span></div>
 
-										<?php
-											$sqlGetTasks = mysqli_query($conexao, "SELECT * FROM tasks WHERE project_id = '$projectID'");
-											while($rowsTasks=mysqli_fetch_array($sqlGetTasks)){
-										?>
-										<div>
+										<div id="recebeTasks<?php echo $projectID; ?>">
+											<!---------
 											<div class="opto-project-tasks-list-container">
 												<div class="opto-project-tasks-listView">
 													<div class="opto-projects-tasks-listView-images-member"><img src="opto/image/members/1135825450israel.jpg"></div>
@@ -1291,7 +1309,7 @@ if(isset($_POST['createProject'])){
 													<div class="opto-projects-tasks-listView-progressBar"><progress id="file" value="32" max="100"> 32% </progress></div>
 												</div>
 											</div>
-											<!--INICIO DOS STEPS-->
+											
 											<div class="opto-project-steps" id="opto-project-steps1">
 												<div class="opto-project-steps-list">
 													<input class="opto-project-steps-checkbox" type="checkbox">
@@ -1299,8 +1317,8 @@ if(isset($_POST['createProject'])){
 													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
 												</div>
 											</div>
+											----->
 										</div>
-										<?php } ?>
 									</div>
 								</div>
 							</div>
