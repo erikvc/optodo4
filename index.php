@@ -1230,6 +1230,8 @@ if(isset($_POST['createProject'])){
 							<?php
 								$sqlGetProjectList = mysqli_query($conexao, "SELECT * FROM projects");
 								while($rowsprojects=mysqli_fetch_array($sqlGetProjectList)){
+
+									$projectID = $rowsprojects['id'];
 									
 									$clientID = $rowsprojects['client'];
 									$sqlGetClientData = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM clients WHERE id = '$clientID'"));
@@ -1261,15 +1263,21 @@ if(isset($_POST['createProject'])){
 										<div class="opto-projects-toosl-right-icon"><a href="#"><i class="fa-solid fa-flag"></i></a></div>
 										<div class="opto-projects-toosl-right-icon"><a href="#"><i class="fa-solid fa-trash"></i></a></div>
 										<div class="opto-projects-toosl-right-icon"><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></div>
-										<div class="opto-projects-toosl-right-icon"><a href="#" onClick="return openProject(1);"><i class="fa-regular fa-folder-open"></i></a></div>
+										<div class="opto-projects-toosl-right-icon"><a href="#" onClick="return openProject(<?php echo $projectID; ?>);"><i class="fa-regular fa-folder-open"></i></a></div>
 									</div>
 									<div class="opto-projects-clock-right">
 										<div class="opto-projects-toosl-clock-icon"><i class="fa-solid fa-clock">&nbsp;</i>02:25:40</div>
 									</div>
 								</div>
-								<div class="opto-project-body" id="opto-project-body1">
+								<div class="opto-project-body" id="opto-project-body<?php echo $projectID; ?>">
+									
 									<div class="opto-project-tasks">
-										<div>Tasks List</div>
+										<div>Tasks List &nbsp;<span><a class="badge badge-primary" onclick="return openModalCreateTask(<?php echo $projectID; ?>);" href="#"><i class="fa-solid fa-plus"></i></a></span></div>
+
+										<?php
+											$sqlGetTasks = mysqli_query($conexao, "SELECT * FROM tasks WHERE project_id = '$projectID'");
+											while($rowsTasks=mysqli_fetch_array($sqlGetTasks)){
+										?>
 										<div>
 											<div class="opto-project-tasks-list-container">
 												<div class="opto-project-tasks-listView">
@@ -1283,144 +1291,16 @@ if(isset($_POST['createProject'])){
 													<div class="opto-projects-tasks-listView-progressBar"><progress id="file" value="32" max="100"> 32% </progress></div>
 												</div>
 											</div>
+											<!--INICIO DOS STEPS-->
 											<div class="opto-project-steps" id="opto-project-steps1">
 												<div class="opto-project-steps-list">
 													<input class="opto-project-steps-checkbox" type="checkbox">
 													<p class="opto-project-steps-title">Titulo do Step</p>
 													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
 												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
 											</div>
 										</div>
-										<div>
-											<div class="opto-project-tasks-list-container">
-												<div class="opto-project-tasks-listView">
-													<div class="opto-projects-tasks-listView-images-member"><img src="opto/image/members/1135825450israel.jpg"></div>
-													<div class="opto-projects-tasks-listView-title">Video Production</div>
-													<div class="opto-projects-tasks-listView-tools">
-														<a href="#"><i class="fa-solid fa-trash"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-														<a href="#" onClick="return openTask(2);" id="opto-projects-tasks-open"><i class="fa-regular fa-folder-open"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-														<a href="#"><i class="fa-solid fa-folder-closed"></i></a>
-													</div>
-													<div class="opto-projects-tasks-listView-progressBar"><progress id="file" value="32" max="100"> 32% </progress></div>
-												</div>
-											</div>
-											<div class="opto-project-steps" id="opto-project-steps2">
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-											</div>
-										</div>
-										<div>
-											<div class="opto-project-tasks-list-container">
-												<div class="opto-project-tasks-listView">
-													<div class="opto-projects-tasks-listView-images-member"><img src="opto/image/members/1135825450israel.jpg"></div>
-													<div class="opto-projects-tasks-listView-title">Video Production</div>
-													<div class="opto-projects-tasks-listView-tools">
-														<a href="#"><i class="fa-solid fa-trash"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-														<a href="#" onClick="return openTask(3);" id="opto-projects-tasks-open"><i class="fa-regular fa-folder-open"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-														<a href="#"><i class="fa-solid fa-folder-closed"></i></a>
-													</div>
-													<div class="opto-projects-tasks-listView-progressBar"><progress id="file" value="32" max="100"> 32% </progress></div>
-												</div>
-											</div>
-											<div class="opto-project-steps" id="opto-project-steps3">
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-
-											</div>
-										</div>
-										<div>
-											<div class="opto-project-tasks-list-container">
-												<div class="opto-project-tasks-listView">
-													<div class="opto-projects-tasks-listView-images-member"><img src="opto/image/members/1135825450israel.jpg"></div>
-													<div class="opto-projects-tasks-listView-title">Video Production</div>
-													<div class="opto-projects-tasks-listView-tools">
-														<a href="#"><i class="fa-solid fa-trash"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-														<a href="#" onClick="return openTask(4);" id="opto-projects-tasks-open"><i class="fa-regular fa-folder-open"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-														<a href="#"><i class="fa-solid fa-folder-closed"></i></a>
-													</div>
-													<div class="opto-projects-tasks-listView-progressBar"><progress id="file" value="32" max="100"> 32% </progress></div>
-												</div>
-											</div>
-											<div class="opto-project-steps" id="opto-project-steps4">
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-												<div class="opto-project-steps-list">
-													<input class="opto-project-steps-checkbox" type="checkbox">
-													<p class="opto-project-steps-title">Titulo do Step</p>
-													<div class="opto-project-steps-delete"><i class="fa-solid fa-trash"></i></div>
-												</div>
-											</div>
-										</div>
-										
+										<?php } ?>
 									</div>
 								</div>
 							</div>
@@ -1678,6 +1558,50 @@ if(isset($_POST['createProject'])){
 							<div class="col-md-12 text-end">
 								<input type="hidden" name="createProject" value="ok">
 								<button type="submit" class="btn btn-primary">Create Client</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+				</form>
+			</section>
+		</div>
+
+		<!-- MODAL CREATE TASK  -->
+		<div id="opto-create-task" class="modal-block modal-block-primary mfp-hide">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Create Task</h2>
+				</header>
+				<form id="opto-form-create-task" action="" method="post">
+					<div class="card-body">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="taskCreateTitle">Task Title</label>
+								<input name="taskCreateTitle" type="text" class="form-control" id="taskCreateTitle">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="taskCreateMember">Member</label>
+								<select name="taskCreateMember" id="taskCreateMember" class="form-control">
+									<?php
+										$sqlGetmembers = mysqli_query($conexao, "SELECT * FROM members");
+										while($rowsMembers=mysqli_fetch_array($sqlGetmembers)){
+									?>
+										<option value="<?php echo $rowsMembers['id']; ?>" <?php if($rowsMembers['id'] == $userID){echo 'selected';}?>><?php echo $rowsMembers['fname']."&nbsp;".$rowsMembers['lname']; ?></option>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="tasktCreateDueDate">Due Date</label>
+								<input name="taskCreateDueDate" type="date" class="form-control" id="taskCreateDueDate">
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer">
+						<div class="row">
+							<div class="col-md-12 text-end">
+								<input type="hidden" id="createTaskProjectID" name="createTaskProjectID" value="">
+								<input type="hidden" name="createTask" value="ok">
+								<button type="submit" class="btn btn-primary">Create Task</button>
 								<button class="btn btn-default modal-dismiss">Cancel</button>
 							</div>
 						</div>

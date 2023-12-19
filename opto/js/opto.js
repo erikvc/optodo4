@@ -1,3 +1,44 @@
+/************FORMULARIO PARA CRIAR UM NOVO TASK************* */
+
+$("#opto-form-create-task").submit(function(){
+    //alert($("#createTaskProjectID").val());
+    var taskCreateTitle = $("#taskCreateTitle").val();
+    var taskCreateMember = $("#taskCreateMember").val();
+    var taskCreateDueDate = $("#taskCreateDueDate").val();
+    var createTaskProjectID = $("#createTaskProjectID").val();
+
+    $.ajax({
+        url: '../php/addTask.php',
+        crossDomain: true,
+        data: 'title='+taskCreateTitle+'&member='+taskCreateMember+'&dueDate='+taskCreateDueDate+'&taskID='+createTaskProjectID,
+        type: 'post',
+        success: function(retorno){
+            if(retorno == 'OK'){
+                $("#taskCreateTitle").val("");
+                $("#taskCreateMember").val("");
+                $("#taskCreateDueDate").val("");
+                $("#createTaskProjectID").val("");
+                $('#opto-create-task').magnificPopup('close');
+            }else{
+                alert("There was a problem and it was not possible to create this task!");
+            }
+        }
+    })
+})
+function openModalCreateTask(taskID){
+    //alert(taskID);
+    $.magnificPopup.open({
+        items: {
+            src: $('#opto-create-task'),
+        },
+        type: 'inline',
+        preloader: false,
+        modal: true,
+    });
+
+    $("#createTaskProjectID").val(taskID);
+}
+
 function openProject(id){
     $("#opto-project-body"+id).toggle();
 }
@@ -37,5 +78,8 @@ function changeLayoutColunm(id){
         $("#rightColumn1").hide();
     }
 }
+
+
+
 
 
