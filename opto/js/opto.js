@@ -1,6 +1,6 @@
 /************FORMULARIO PARA CRIAR UM NOVO TASK************* */
 
-$("#opto-form-create-task").submit(function(){
+$("#opto-create-task").submit(function(){
     //alert($("#createTaskProjectID").val());
     var taskCreateTitle = $("#taskCreateTitle").val();
     var taskCreateMember = $("#taskCreateMember").val();
@@ -8,10 +8,10 @@ $("#opto-form-create-task").submit(function(){
     var createTaskProjectID = $("#createTaskProjectID").val();
 
     $.ajax({
-        url: '../php/addTask.php',
+        type: 'get',
+        url: 'opto/php/addTask.php',
         crossDomain: true,
         data: 'title='+taskCreateTitle+'&member='+taskCreateMember+'&dueDate='+taskCreateDueDate+'&taskID='+createTaskProjectID,
-        type: 'post',
         success: function(retorno){
             if(retorno == 'OK'){
                 $("#taskCreateTitle").val("");
