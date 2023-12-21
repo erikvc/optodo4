@@ -7,7 +7,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 require("../../conexaoPDO.php");
 
-$project_id = $_GET['project_id'];
+$project_id = $_POST['project_id'];
 
 $sqlGetTasks = mysqli_query($conexao, "SELECT * FROM tasks WHERE project_id = '$project_id'") or die(mysqli_error($conexao));
 
