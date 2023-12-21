@@ -1574,6 +1574,36 @@ if(isset($_POST['createProject'])){
 				</form>
 			</section>
 		</div>
+
+
+		<!-- MODAL CREATE STEP  -->
+		<div id="opto-create-step" class="modal-block modal-block-primary mfp-hide">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Create Step</h2>
+				</header>
+				<form id="opto-form-create-step" action="" method="post">
+					<div class="card-body">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="stepCreateTitle">Step Title</label>
+								<input name="stepCreateTitle" type="text" class="form-control" id="stepCreateTitle">
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer">
+						<div class="row">
+							<div class="col-md-12 text-end">
+								<input type="hidden" id="createStepTaskID" name="createStepTaskID" value="">
+								<input type="hidden" name="createStep" value="ok">
+								<button type="submit" class="btn btn-primary">Create Step</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+				</form>
+			</section>
+		</div>
 		
 
 		<!-- Vendor -->
