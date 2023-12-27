@@ -18,6 +18,7 @@ while($rows = mysqli_fetch_array($sqlGetSteps)){
 	$enviarArray['id'] = $rows['id'];
 	$enviarArray['title'] = $rows['title'];
 	$enviarArray['task_id'] = $rows['task_id'];
+	$enviarArray['checked'] = $rows['checked'];
 	$enviarArray['creation_date'] = $rows['creation_date'];
 	
 	array_push($array_retorno, $enviarArray);

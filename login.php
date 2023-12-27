@@ -89,7 +89,7 @@
 
 							
 
-							<p class="text-center">Don't have an account yet? <a href="pages-signup.html">Sign Up!</a></p>
+							<p class="text-center">Don't have an account yet? <a href="register.php">Sign Up!</a></p>
 
 						</form>
 					</div>

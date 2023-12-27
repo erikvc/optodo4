@@ -98,7 +98,7 @@
 							</div>
 
 						
-							<p class="text-center">Already have an account? <a href="pages-signin.html">Sign In!</a></p>
+							<p class="text-center">Already have an account? <a href="login.php">Sign In!</a></p>
 
 						</form>
 					</div>
