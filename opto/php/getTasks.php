@@ -49,7 +49,7 @@ while($rows = mysqli_fetch_array($sqlGetTasks)){
 	
 	
 	$enviarArray['id'] = $rows['id'];
-	$enviarArray['title'] = $rows['title'];
+	$enviarArray['title'] = formatTaskTitle($taskID);
 	$enviarArray['project_id'] = $rows['project_id'];
 	$enviarArray['member_id'] = $rows['member_id'];
 	$enviarArray['number'] = $taskNumberFormat;

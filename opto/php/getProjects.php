@@ -6,6 +6,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 
 require("../../conexaoPDO.php");
+require("functions.php");
 
 //$project_id = $_GET['userID'];
 session_start();
@@ -42,7 +43,7 @@ while($rows = mysqli_fetch_array($sqlGetTasks)){
 	}
 	
 	$enviarArray['id'] = $rows['id'];
-	$enviarArray['projectName'] = $rows['projectName'];
+	$enviarArray['projectName'] = formatProjectName($projectID);
 	$enviarArray['member'] = $rows['member'];
 	$enviarArray['memberImage'] = $sqlGetMember['image'];
 	$enviarArray['number'] = $projectNumberFormat;
