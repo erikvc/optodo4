@@ -6,6 +6,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 
 require("../../conexaoPDO.php");
+require("functions.php");
 
 session_start();
 $atualUserEmail = $_SESSION['optodo'];
@@ -34,9 +35,6 @@ while($rows = mysqli_fetch_array($sqlGetTasks)){
 	}
 
 	$sqlGetMember = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM members WHERE id = '$member_id'"));
-	$sqlGetProject = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM projects WHERE id = '$projectID'"));
-	$clientID = $sqlGetProject['client'];
-	
 
 	/**FORMAT HORAS */
 	$horas = date("H", strtotime($rows['horas']));
