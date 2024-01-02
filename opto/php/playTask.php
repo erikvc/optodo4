@@ -7,21 +7,27 @@ header('Content-Type: text/html; charset=utf-8');
 
 require("../../conexaoPDO.php");
 
-$taskID = $_GET['taskID'];
-$horas = $_GET['horas'];
-$minutos = $_GET['minutos'];
-$segundos = $_GET['segundos'];
+	$taskID = $_GET['taskID'];
 
-$horasUpdate = $horas.':'.$minutos.':'.$segundos;
+	$getTask = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM tasks WHERE id='$taskID'"));
 
-$sqlGetPlay = mysqli_fetch_assoc(mysqli_query($conexao, "SELECT * FROM tasks WHERE id = '$taskID'")) or die(mysqli_error($conexao));
+	$horaBD = $getTask['horas'];
 
-if($sqlGetPlay['play'] == 0){
+	$array_retorno = array();
+
+	$time = explode(":", $horaBD);
+	$horas = $time[0];
+	$minutos = $time[1];
+	$segundos = $time[2];
+
+	$enviarArray['horas'] = $horas;
+	$enviarArray['minutos'] = $minutos;
+	$enviarArray['segundos'] = $segundos;
+	
+	array_push($array_retorno, $enviarArray);
+
 	$sqlChangePlay = mysqli_query($conexao, "UPDATE tasks SET play = 1 WHERE id = '$taskID'");
-	echo 'play';
-}else{
-	$sqlChangePlay = mysqli_query($conexao, "UPDATE tasks SET play = 0, horas = '$horasUpdate' WHERE id = '$taskID'");
-	echo 'pause';
-}
+
+	echo json_encode($array_retorno);
 
 ?>

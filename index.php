@@ -462,7 +462,42 @@ if(isset($_POST['createProject'])){
 				                            <span>Presets</span>
 				                        </a>                        
 				                    </li>
-
+									<li class="nav-parent">
+				                        <a class="nav-link" href="#">
+				                            <i class="bx bx-map" aria-hidden="true"></i>
+				                            <span>View</span>
+				                        </a>
+				                        <ul class="nav nav-children">
+				                            <li>
+				                                <a class="nav-link" href="#" onClick="return changeView(0, <?php echo $userID; ?>);">
+				                                    All Projects
+				                                </a>
+				                            </li>
+											<li>
+				                                <a class="nav-link" href="#" onClick="return changeView(1, <?php echo $userID; ?>);">
+				                                    Shered With Me
+				                                </a>
+				                            </li>
+				                        </ul>
+				                    </li>
+									<li class="nav-parent">
+				                        <a class="nav-link" href="#">
+				                            <i class="bx bx-map" aria-hidden="true"></i>
+				                            <span>Ordering</span>
+				                        </a>
+				                        <ul class="nav nav-children">
+				                            <li>
+				                                <a class="nav-link" href="#" onClick="return changeOrdering(1);">
+				                                    Priority
+				                                </a>
+				                            </li>
+											<li>
+				                                <a class="nav-link" href="#" onClick="return changeOrdering(0);">
+				                                    Clear Ordering
+				                                </a>
+				                            </li>
+				                        </ul>
+				                    </li>
 				                </ul>
 				            </nav>
 
@@ -522,6 +557,14 @@ if(isset($_POST['createProject'])){
 					<!-- start: page -->
 
 					<div class="row">
+						<!--PRESET EDIT MODE--
+						<div id="recebePresetEditMode" class="col-lg-12 mb-lg-2">
+							<h4>LOADING...</h4>
+							
+						</div>
+						-->
+
+
 						<!--PROJECT LIST-->
 						<div id="recebeProjects" class="col-lg-12 mb-lg-2">
 							<h4>LOADING...</h4>
@@ -578,7 +621,7 @@ if(isset($_POST['createProject'])){
 										while($rowsMembers=mysqli_fetch_array($sqlGetmembers)){
 									?>
 										<div class="opto-members-list">
-											<div class="opto-members-list-image"><img width="30" height="30" src="opto/image/members/<?php echo $rowsMembers['image']; ?>"></div>
+											<div class="opto-members-list-image"><a href="#" onClick="return changeView(2, <?php echo $rowsMembers['id']; ?>);"><img width="30" height="30" src="opto/image/members/<?php echo $rowsMembers['image']; ?>"></a></div>
 											<div class="opto-members-name"><?php echo $rowsMembers['fname']; ?>&nbsp;<?php echo $rowsMembers['lname']; ?></div>
 											<div class="badge bg-warning opto-members-list-tasks">10</div>
 										</div>
@@ -593,7 +636,7 @@ if(isset($_POST['createProject'])){
 										while($rowsClients=mysqli_fetch_array($sqlGetClients)){
 									?>
 										<div class="opto-members-list">
-											<div class="opto-members-list-image"><img width="30" height="30" src="opto/image/clients/<?php echo $rowsClients['image']; ?>"></div>
+											<div class="opto-members-list-image"><a href="#" onClick="return changeView(3, <?php echo $rowsClients['id']; ?>);"><img width="30" height="30" src="opto/image/clients/<?php echo $rowsClients['image']; ?>"></a></div>
 											<div class="opto-members-name"><b><?php echo $rowsClients['abbreviation']; ?></b>&nbsp;-&nbsp;<?php echo $rowsClients['name']; ?></div>
 											<div class="badge bg-warning opto-members-list-tasks">10</div>
 										</div>
@@ -873,6 +916,51 @@ if(isset($_POST['createProject'])){
 		</div>
 
 
+		<!-- MODAL CREATE TASK EDIT MODE  -->
+		<div id="opto-create-task-editMode" class="modal-block modal-block-primary mfp-hide">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Create Preset Task</h2>
+				</header>
+				<form id="opto-form-create-task-editMode" action="" method="post">
+					<div class="card-body">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="taskCreateTitleEditMode">Task Title</label>
+								<input name="taskCreateTitleEditMode" type="text" class="form-control" id="taskCreateTitleEditMode">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="taskCreateMemberEditMode">Member</label>
+								<select name="taskCreateMemberEditMode" id="taskCreateMemberEditMode" class="form-control">
+									<?php
+										$sqlGetmembers = mysqli_query($conexao, "SELECT * FROM members");
+										while($rowsMembers=mysqli_fetch_array($sqlGetmembers)){
+									?>
+										<option value="<?php echo $rowsMembers['id']; ?>" <?php if($rowsMembers['id'] == $userID){echo 'selected';}?>><?php echo $rowsMembers['fname']."&nbsp;".$rowsMembers['lname']; ?></option>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="taskCreateDueDateEditMode">Due Date</label>
+								<input name="taskCreateDueDateEditMode" type="date" class="form-control" id="taskCreateDueDateEditMode">
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer">
+						<div class="row">
+							<div class="col-md-12 text-end">
+								<input type="hidden" id="createTaskProjectIDEditMode" name="createTaskProjectIDEditMode" value="">
+								<input type="hidden" name="createTaskEditMode" value="ok">
+								<button type="submit" class="btn btn-primary">Create Task</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+				</form>
+			</section>
+		</div>
+
+
 		<!-- MODAL CREATE STEP  -->
 		<div id="opto-create-step" class="modal-block modal-block-primary mfp-hide">
 			<section class="card">
@@ -892,6 +980,36 @@ if(isset($_POST['createProject'])){
 						<div class="row">
 							<div class="col-md-12 text-end">
 								<input type="hidden" id="createStepTaskID" name="createStepTaskID" value="">
+								<input type="hidden" name="createStep" value="ok">
+								<button type="submit" class="btn btn-primary">Create Step</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+				</form>
+			</section>
+		</div>
+
+
+		<!-- MODAL CREATE STEP EDIT MODE  -->
+		<div id="opto-form-create-step-editMode" class="modal-block modal-block-primary mfp-hide">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Create Preset Step</h2>
+				</header>
+				<form id="opto-form-create-step" action="" method="post">
+					<div class="card-body">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="stepCreateTitleEditMode">Step Title</label>
+								<input name="stepCreateTitleEditMode" type="text" class="form-control" id="stepCreateTitleEditMode">
+							</div>
+						</div>
+					</div>
+					<footer class="card-footer">
+						<div class="row">
+							<div class="col-md-12 text-end">
+								<input type="hidden" id="createStepTaskIDEditMode" name="createStepTaskID" value="">
 								<input type="hidden" name="createStep" value="ok">
 								<button type="submit" class="btn btn-primary">Create Step</button>
 								<button class="btn btn-default modal-dismiss">Cancel</button>
@@ -933,6 +1051,37 @@ if(isset($_POST['createProject'])){
 					<div class="row">
 						<div class="col-md-12 text-end">
 							<button class="btn btn-default modal-dismiss">Cancel</button>
+						</div>
+					</div>
+				</footer>
+			</section>
+		</div>
+
+
+
+
+		<!------MODAL DELETE---------->
+		<div id="modalDelete" class="modal-block modal-header-color modal-block-warning mfp-hide">
+			<section class="card">
+				<header class="card-header">
+					<h2 class="card-title">Warning!</h2>
+				</header>
+				<div class="card-body">
+					<div class="modal-wrapper">
+						<div class="modal-icon">
+							<i class="fas fa-exclamation-triangle"></i>
+						</div>
+						<div class="modal-text">
+							<h4 class="font-weight-bold text-dark">Warning</h4>
+							<p id="recebeMSG">This is a warning message.</p>
+						</div>
+					</div>
+				</div>
+				<footer class="card-footer">
+					<div class="row">
+						<div class="col-md-12 text-end">
+							<span id="recebeCTNConfirm"><a href="#" onclick="return deleteThis(tipo, deleteID)" class="btn btn-warning">Confirm</a></span>
+							<button type="button" class="btn btn-default modal-dismiss" data-bs-dismiss="modal">Close</button>
 						</div>
 					</div>
 				</footer>
@@ -1003,6 +1152,7 @@ if(isset($_POST['createProject'])){
 			$(document).ready(function(){
 				getProjects();
 				workingNow();
+				//getProjectsEditMode()
 			});
 		</script>
 

@@ -42,7 +42,7 @@ $soma = 0;
 while($rows=mysqli_fetch_array($sqlGetProjectID)){
     $calc = 0;
     list($horas, $minutos, $segundos) = explode(":", $rows['horas']);
-    $calc = $horas * 3600 + $minutos + 60 + $segundos;
+    $calc = $horas * 3600 + $minutos * 60 + $segundos;
 
     $soma = $soma + $calc;
 }

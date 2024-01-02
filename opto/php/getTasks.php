@@ -59,6 +59,7 @@ while($rows = mysqli_fetch_array($sqlGetTasks)){
 	$enviarArray['horas'] = $horas;
 	$enviarArray['minutos'] = $minutos;
 	$enviarArray['segundos'] = $segundos;
+	$enviarArray['play'] = $rows['play'];
 	
 	array_push($array_retorno, $enviarArray);
 	
